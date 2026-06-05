@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🐍 Python Quest — Learn Python!</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Prism.js for syntax highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+</head>
+<body>
+
+  <!-- ── Loading Screen ─────────────────────────────────────── -->
+  <div id="loading-screen">
+    <div class="loading-logo">🐍</div>
+    <h1 class="loading-title">Python Quest</h1>
+    <p class="loading-subtitle">Python for coders who already know stuff!</p>
+    <div class="loading-bar">
+      <div class="loading-progress"></div>
+    </div>
+    <p id="loading-status" style="margin-top: 18px; font-size: 13px; color: #8b949e;">
+      Loading Python engine (first load takes ~10 seconds)...
+    </p>
+  </div>
+
+  <!-- ── Main App ────────────────────────────────────────────── -->
+  <div id="app" class="hidden">
+
+    <!-- Header -->
+    <header>
+      <div class="header-logo">
+        <span class="icon">🐍</span>
+        <span class="name">Python Quest</span>
+      </div>
+      <div class="header-xp">
+        <div class="level-badge" id="level-badge">Python Newbie</div>
+        <div class="xp-bar-container">
+          <div class="xp-bar">
+            <div class="xp-fill" id="xp-fill" style="width: 0%"></div>
+          </div>
+          <div class="xp-text" id="xp-text">0 / 200 XP</div>
+        </div>
+      </div>
+      <button onclick="resetProgress()" class="reset-btn" title="Reset all progress">↺ Reset</button>
+    </header>
+
+    <!-- Main Layout -->
+    <div class="main-layout">
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-title">📚 Lessons</div>
+        <div id="lesson-list"><!-- rendered by JS --></div>
+      </aside>
+
+      <!-- Content -->
+      <div class="content-area" id="content-area">
+        <div id="lesson-content"><!-- rendered by JS --></div>
+      </div>
+
+      <!-- Editor Panel -->
+      <div class="editor-panel">
+        <div class="editor-header">
+          <span class="editor-title">🐍 Python Editor</span>
+          <span class="editor-shortcuts" style="color:#484f58; font-size:11px">⌘↵ or Ctrl+↵ to run</span>
+          <button id="run-btn" class="run-btn" onclick="runCode()">▶ Run</button>
+        </div>
+        <div id="ace-editor"></div>
+        <div class="output-section">
+          <div class="output-header">
+            <span>Output</span>
+            <button class="clear-btn" onclick="clearOutput()">Clear</button>
+          </div>
+          <div id="output-display" class="output-normal">
+            <span style="color:#484f58">// Click ▶ Run to see your output here</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast container -->
+  <div id="toast-container"></div>
+
+  <!-- ── Scripts ─────────────────────────────────────────────── -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.32.6/ace.js" crossorigin="anonymous"></script>
+  <script src="lessons.js"></script>
+  <script src="app.js"></script>
+
+  <script>
+    // Dynamically load Pyodide then boot the app
+    (function() {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js';
+      script.onload = () => initApp();
+      script.onerror = () => {
+        document.getElementById('loading-status').textContent =
+          '❌ Failed to load Python. Check your internet connection and refresh.';
+      };
+      document.head.appendChild(script);
+    })();
+  </script>
+
+</body>
+</html>
